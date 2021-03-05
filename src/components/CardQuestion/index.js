@@ -35,7 +35,8 @@ function CardAnswer() {
     </ContainerAnswer>
   );
 }
-function CardQuestion() {
+function CardQuestion({ question }) {
+  console.log(question);
   return (
     <Container>
       <CardHeader>
@@ -46,7 +47,7 @@ function CardQuestion() {
         </HeaderContent>
       </CardHeader>
       <CardBody>
-        <TextTitle>Titulo da questão</TextTitle>
+        <TextTitle>{question.title}</TextTitle>
         <TextDescription>Descrição da questão fica aqui</TextDescription>
         <ImageQuestion source={fotoPerfil} style={{ resizeMode: "contain" }} />
       </CardBody>
