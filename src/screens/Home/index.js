@@ -1,49 +1,61 @@
-import React, { useState, useEffect } from "react";
-import { Container, ToolBar, TextToolBar } from "./styles";
-import { StatusBar, FlatList } from "react-native";
-import colors from "../../styles/colors";
+import React, { useEffect, useState } from "react";
+import { Text, View, StatusBar, FlatList } from "react-native";
 import CardQuestion from "../../components/CardQuestion";
 import { api } from "../../services/api";
+import colors from "../../styles/colors";
+import { Container, TextToolBar, ToolBar } from "./styles";
+
 function Home() {
   StatusBar.setBackgroundColor(colors.primary);
+
   const [isLoadingFeed, setIsLoadingFeed] = useState(false);
   const [questions, setQuestions] = useState([]);
-  const [totalQuestion, setTotalQuestions] = useState(0);
+  const [totalQuestions, setTotalQuestions] = useState(0);
   const [page, setPage] = useState(1);
 
   const loadQuestions = async (reload) => {
-    // se ja estiver buscando não busca de novo
+    //se já tiver buscando, não busca de novo
     if (isLoadingFeed) return;
-    //se tiver no fim não busca de novo
-    if (totalQuestion > 0 && totalQuestion == questions.length) return;
+
+    //se tiver chego no fim, não busca de novo
+    if (totalQuestions > 0 && totalQuestions == questions.length) return;
+
     setIsLoadingFeed(true);
+
     const response = await api.get("/feed", {
       params: { page },
     });
 
     setPage(page + 1);
 
-    setTotalQuestions(response.headers["x-total-count"]);
     setQuestions([...questions, ...response.data]);
+
+    setTotalQuestions(response.headers["x-total-count"]);
+
     setIsLoadingFeed(false);
   };
 
   useEffect(() => {
     loadQuestions();
   }, []);
+
   return (
     <Container>
       <ToolBar>
         <TextToolBar>SENAI OVERFLOW</TextToolBar>
       </ToolBar>
-      <FlatList>
+      <FlatList
         data={questions}
         style={{ width: "100%" }}
+        onEndReached={() => loadQuestions()}
+        onEndReachedThreshold={0.2}
         keyExtractor={(question) => String(question.id)}
-        renderItem=
-        {({ item: question }) => <CardQuestion question={question} />}
-      </FlatList>
+        renderItem={({ item: question }) => (
+          <CardQuestion question={question} />
+        )}
+      />
     </Container>
   );
 }
+
 export default Home;
