@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, StatusBar, FlatList } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import CardQuestion from "../../components/CardQuestion";
 import { api } from "../../services/api";
 import colors from "../../styles/colors";
 import { Container, TextToolBar, ToolBar } from "./styles";
 
-function Home() {
+function Home({ navigation }) {
   StatusBar.setBackgroundColor(colors.primary);
 
   const [isLoadingFeed, setIsLoadingFeed] = useState(false);
@@ -43,6 +44,12 @@ function Home() {
     <Container>
       <ToolBar>
         <TextToolBar>SENAI OVERFLOW</TextToolBar>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Login")}
+          style={{ right: 4, position: "absolute" }}
+        >
+          <IconSingOut name="sing-out" />
+        </TouchableOpacity>
       </ToolBar>
       <FlatList
         data={questions}

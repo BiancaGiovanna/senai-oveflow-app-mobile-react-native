@@ -5,9 +5,10 @@ import { TextDefault } from "../../styles/stylesGlobal";
 export const Content = styled.View`
   flex: 1;
   width: 100%;
+  display: flex;
   justify-content: center;
   align-items: center;
-  background-color: red;
+  /* background-color: red; */
 `;
 export const TextInputLogin = styled.TextInput`
   width: 96%;
